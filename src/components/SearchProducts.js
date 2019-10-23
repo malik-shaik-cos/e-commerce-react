@@ -22,8 +22,6 @@ class SearchProducts extends Component
     }
     getSuggestedProducts(hint)
     {
-        // console.log("Before Status of notFound : ",this.state.notFound);
-        // console.log("After Status of notFound : ",this.state.notFound);
         if(this.state.itemsCount === 0 )
         {
             fetch("http://laravel.local/api/suggest/"+(hint) , {
