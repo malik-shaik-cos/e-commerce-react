@@ -10,6 +10,49 @@ class ProductDetails extends Component
         this.state = {
             items : [],
             isLoaded : false,
+            cartStatus : '',
+            res : []
+        }
+        this.addToCart = this.addToCart.bind(this);
+    }
+    addToCart()
+    {
+        var token = sessionStorage.getItem('Token');
+       
+        
+        if((token === null) || (token.length === 0)|| (token === 'null') || (token === undefined))
+        {
+            alert("Please Login with Authorized details");
+        }
+        else
+        {
+            var data = ({ 
+                "id" : this.state.items.id,
+                "title" : this.state.items.title,
+                "description" : this.state.items.description,
+                "price" : this.state.items.price,
+                "no_of_items" : this.state.items.quantity,
+                "logo" : this.state.items.logo
+            });
+            console.log("New",data);
+            console.log();
+            // alert("Success Added...........");
+            fetch("http://laravel.local/api/cart" , {
+                method: 'POST',  
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization' : 'Bearer '+token
+                },
+                body : JSON.stringify(this.state.items),
+            })
+            .then(res => res.json())
+            .then(json => {
+                this.setState({
+                    cartStatus : 'Successfully Added to Cart',
+                    res : json
+                })
+            });
+            console.log("State data in Product Detail Page:",this.state.items.id);
         }
     }
     componentDidMount()
@@ -17,7 +60,7 @@ class ProductDetails extends Component
         const url = this.props.location.search;
         const splittingArray = url.split("=");
         const q = splittingArray[1];
-        console.log("Location URL :",window.location.href);
+        // console.log("Location URL :",window.location.href);
         fetch("http://laravel.local/api/product-details/"+q , {
             method: 'GET',  
             headers: {
@@ -34,7 +77,8 @@ class ProductDetails extends Component
     }
     render()
     {
-        console.log("Product : ",this.state.items);
+        // console.log("Product : ",this.state.items);
+        console.log("State Data:",this.state);
         var {isLoaded} = this.state;
         let cardStyle = {
             marginBottom : 10,
@@ -42,6 +86,13 @@ class ProductDetails extends Component
         let amountStyle = {
             color:'green'
         };
+        var dis = false , link_text = 'Add to Cart';
+        if(sessionStorage.getItem('Token')===null)
+        {
+            console.log("Product Details Page");
+            dis = true;
+            link_text = 'Please Login to get this Item.';
+        }
         if(!isLoaded)
         {
             return <div align="center"><h1>Please wait it's Loading...</h1></div>;
@@ -72,7 +123,7 @@ class ProductDetails extends Component
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td align="right">Product Name : </td>
+                                            <td align="right" width="50%">Product Name : </td>
                                             <td align="left"><h4>{this.state.items.title}</h4> </td>
                                         </tr>
                                         <tr>
@@ -89,7 +140,7 @@ class ProductDetails extends Component
                                         </tr>
                                         <tr>
                                             <td align="center" colSpan={2}>
-                                                <Button variant="success">Add to Cart</Button>
+                                                <Button variant="outline-success" onClick={this.addToCart} disabled={dis}>{link_text}</Button>
                                             </td>
                                         </tr>
                                     </tbody>

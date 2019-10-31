@@ -4,8 +4,12 @@ import Home from './components/Home'
 import {  BrowserRouter as Router,   Route , Switch} from "react-router-dom";
 import Products from './components/Products';
 import Tab2 from './components/Tab2';
+// import Login from './components/Login'
 import SearchProducts from './components/SearchProducts';
 import ProductDetails from './components/ProductDetails';
+// import Register from './components/Register';
+import Authentication from './components/Authentication';
+import AuthModal from './components/AuthModal';
 // import Tab1 from './components/Tab1';
 // const Greeting = ({match}) => console.log('hint : ',match.params.q);
 class App extends Component
@@ -34,11 +38,15 @@ class App extends Component
                   <SearchProducts/>                  
               </Route> */}  
               <Route exact path="/search" component={SearchProducts} />
+              <Route exact path="/modal" component={AuthModal} />
               {/* <Route exact path="/Tab1" render={(props) => <Tab1 {...props} />} /> */}
               {/* <Route exact path="/search" render={(props) => <SearchProducts {...props} />} /> */}
               <Route exact path="/product" component={ProductDetails} />
               <Route exact path="/all" component={Products} />
               <Route exact path="/Tab2"><Tab2 /></Route>
+              {/* <Route exact path="/login"><Login /></Route> */}
+              {/* <Route exact path="/register"><Register /></Route> */}
+              <Route exact path="/auth"><Authentication /></Route>
               {/* <Route exact path="/products"><Products /></Route> */}
             </Switch>
           {/* <Switch>

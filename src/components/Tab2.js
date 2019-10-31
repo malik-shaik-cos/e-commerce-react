@@ -5,22 +5,32 @@ class Tab2 extends Component
     {
         super();
         this.state = {
-            isLoaded : true
-        }
-        this.clickBtn = this.clickBtn.bind(this);
+            results : '',
+        };
     }
-    clickBtn()
+    componentDidMount()
     {
-        // browserHistory.push('/displaylist');
-        // this.props.history.push("/back")
-        // alert("Hello");
+        const data = { "user_id": 5, "product_id": 3, "no_of_items": 1 };
+        fetch('http://laravel.local/api/show',{
+            method: 'POST',  
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body : JSON.stringify(data),
+        })
+        .then(res => res.json())
+        .then(json => {
+            this.setState({
+                results : json,
+            })
+        });
     }
     render()
     {
+        console.log("render");
         return(
             <div align="center">
-                <h1>This is Tab2 Page</h1>
-                <button onClick={this.clickBtn}>Click Btn</button>
+               {this.state.results}
             </div>
         );
     }

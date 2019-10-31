@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Container,Form,Row,Col,Button,Card} from 'react-bootstrap';
+import { Container,Row,Col,Card} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
+import Header from './Header';
 // import {Route , Switch } from 'react-router-dom';
 // import Tab1 from './Tab1';
 class Home extends Component
@@ -63,11 +64,11 @@ class Home extends Component
                id:123,
            }}/>
         }
-        let mystyle = {
-            marginTop:10,
-            marginBottom : 10,
-            textAlign:'center'
-        }
+        // let mystyle = {
+        //     marginTop:10,
+        //     marginBottom : 10,
+        //     textAlign:'center'
+        // }
         let cardStyle = {
             marginBottom : 10,
         };
@@ -77,7 +78,7 @@ class Home extends Component
         return(
             
             <div className="products-wrapper">
-                <Container style={mystyle}>
+                {/* <Container style={mystyle}>
                     <Form onSubmit={this.handleSubmit}>
                         <Row>
                             <Col xl={9}>
@@ -85,17 +86,13 @@ class Home extends Component
                             </Col>
                             <Col xl={3}>
                                 <Link to={`/search?q=${this.state.hint}`}> 
-                                {/* <Link to={{
-                                    pathname : '/Tab1',
-                                    state : { data : 'MalikBasha' }
-                                }}> */}
                                     <Button variant="success" type="submit">Search</Button>
                                 </Link>
                             </Col>
                         </Row>
                     </Form>
-                </Container>
-
+                </Container> */}
+                <Header />
                 <Container style={{marginTop:10}}>
                     <Row>
                         {this.state.items.map(item => (                            
