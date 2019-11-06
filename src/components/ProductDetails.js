@@ -26,21 +26,11 @@ class ProductDetails extends Component
         }
         else
         {
-            var data = ({ 
-                "id" : this.state.items.id,
-                "title" : this.state.items.title,
-                "description" : this.state.items.description,
-                "price" : this.state.items.price,
-                "no_of_items" : this.state.items.quantity,
-                "logo" : this.state.items.logo
-            });
-            console.log("New",data);
-            console.log();
             // alert("Success Added...........");
-            fetch("http://laravel.local/api/cart" , {
+            fetch("http://laravel.local/api/add-to-cart",{
                 method: 'POST',  
                 headers: {
-                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
                     'Authorization' : 'Bearer '+token
                 },
                 body : JSON.stringify(this.state.items),
@@ -53,6 +43,7 @@ class ProductDetails extends Component
                 })
             });
             console.log("State data in Product Detail Page:",this.state.items.id);
+            alert("Successfully Added to your cart..");
         }
     }
     componentDidMount()
@@ -60,7 +51,7 @@ class ProductDetails extends Component
         const url = this.props.location.search;
         const splittingArray = url.split("=");
         const q = splittingArray[1];
-        // console.log("Location URL :",window.location.href);
+        console.log("Location URL :",window.location.href);
         fetch("http://laravel.local/api/product-details/"+q , {
             method: 'GET',  
             headers: {

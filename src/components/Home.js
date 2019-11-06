@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Container,Row,Col,Card} from 'react-bootstrap';
-import {Link} from 'react-router-dom';
+// import { Container,Row,Col,Card} from 'react-bootstrap';
+// import {Link} from 'react-router-dom';
 import Header from './Header';
+import Products from './Products';
 // import {Route , Switch } from 'react-router-dom';
 // import Tab1 from './Tab1';
 class Home extends Component
@@ -69,12 +70,12 @@ class Home extends Component
         //     marginBottom : 10,
         //     textAlign:'center'
         // }
-        let cardStyle = {
-            marginBottom : 10,
-        };
-        let amountStyle = {
-            color:'green'
-        };
+        // let cardStyle = {
+        //     marginBottom : 10,
+        // };
+        // let amountStyle = {
+        //     color:'green'
+        // };
         return(
             
             <div className="products-wrapper">
@@ -93,7 +94,8 @@ class Home extends Component
                     </Form>
                 </Container> */}
                 <Header />
-                <Container style={{marginTop:10}}>
+                <Products />
+                {/* <Container style={{marginTop:10}}>
                     <Row>
                         {this.state.items.map(item => (                            
                             <Col style={cardStyle} lg={3} key={item.id}>
@@ -111,7 +113,7 @@ class Home extends Component
                             </Col>                            
                         ))}
                     </Row>
-                </Container>
+                </Container> */}
             </div>
         );
     }

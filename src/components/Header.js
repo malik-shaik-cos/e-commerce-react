@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button,Form, Container, Row , Col } from 'react-bootstrap';
 import { Link} from "react-router-dom";
 import AuthModal from './AuthModal';
+import CartButton from './CartButton';
 class Header extends Component
 {
     constructor(props)
@@ -9,10 +10,12 @@ class Header extends Component
         super(props);
         this.state = { 
             hint : '',
+            cartBtn : false
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.log = this.logout.bind(this);
+        this.logout = this.logout.bind(this);
+        this.finalLogout = this.finalLogout.bind(this);
     }
     handleChange(event)
     {
@@ -21,14 +24,15 @@ class Header extends Component
     }
     componentDidMount()
     {
-        if(sessionStorage.getItem('Token'))
-        {
-            var name = sessionStorage.getItem('Token');
-            // console.log("Session Data ",name);
-        }
-        else
-        {
-            console.log("Session Destroy");
+        var token = sessionStorage.getItem('Token');
+        if((token!==null) || (token!=="") || (token!==undefined) || (token.length !== 0))
+        {     
+            // console.log("I am inside ComponentDidMount in Header");       
+            this.setState({
+                cartBtn : true,
+            });
+            console.log(this.state);
+           
         }
     }
     handleSubmit(event)
@@ -47,11 +51,7 @@ class Header extends Component
         {
             if(window.confirm("Are you sure want to Log out ?"))
             {
-                console.log("Successfully Log out..........");
-                sessionStorage.clear();
-                localStorage.clear();
-                // alert("Successfully Log out..........");
-                window.location.reload(false);
+                this.finalLogout();
             }
             else
             {
@@ -59,18 +59,13 @@ class Header extends Component
             }
         }        
     }
-    // componentWillUpdate()
-    // {
-    //     var token = sessionStorage.getItem("Token");
-    //     if((token.length !== 0) && (token !== "") && (token !== null))
-    //     {
-    //         this.setState({loginStatus:true});
-    //     }
-    //     else
-    //     {
-    //         console.log("You logged Out.");
-    //     }
-    // }
+    finalLogout()
+    {
+        console.log("Successfully Log out..........");
+        sessionStorage.clear();
+        localStorage.clear();
+        window.location.reload(false);
+    }
     render()
     {
         let mystyle = {
@@ -89,7 +84,6 @@ class Header extends Component
             data_toggle = 'modal';
             c_name = 'btn btn-primary';
             console.log("You logged Out.");
-            // btn = '<button type="button" className="btn btn-primary" data-toggle="modal" data-target="#myModal">Login</button>';
         }
         else
         {
@@ -97,28 +91,30 @@ class Header extends Component
             text = 'Log out';
             data_target = '';
             data_toggle = '';
-            c_name = 'btn btn-outline-primary';
-            // btn = '<button type="button" className="btn btn-primary" disabled="true">Log out</button>';
-            
+            c_name = 'btn btn-outline-primary';            
         }
         return <Container style={mystyle}>
                 <Form onSubmit={this.handleSubmit}>
                     <Row>
-                        <Col xl={2}>
-                            <Link to="/"> 
+                        <Col xl={1}>
+                            <Link to="/">
                                 <Button variant="info" type="submit">Home</Button>
                             </Link>
                         </Col>
-                        <Col xl={6}>
+                        <Col xl={7}>
                             <Form.Control type="text" value={this.state.value} placeholder = " Please type atleast 3 characters to enable search buttom " onChange={this.handleChange} />
                         </Col>
-                        <Col xl={2}>
+                        <Col xl={1}>
                             <Link to={`/search?q=${this.state.hint}`}> 
                                 <Button variant="success" type="submit">Search</Button>
                             </Link>
                         </Col>
                         <Col xl={2}>
-                            <button type="button" onClick={this.logout} className={c_name} data-toggle={data_toggle} data-target={data_target} >{text}</button>
+                            <button type="button" onClick={this.logout} className={c_name} data-toggle={data_toggle} data-target={data_target} id="popupBtn" >{text}</button>
+                        </Col>
+                        <Col xl={1}>
+                            {/* <a href="cart-details" className="btn btn-outline-info" id="cartBtn" >Cart</a> */}
+                            {this.state.cartBtn && <CartButton/>}
                         </Col>
                     </Row>
                 </Form>
