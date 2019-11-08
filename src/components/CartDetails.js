@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import Header from './components/Header';
+import Header from './Header';
 import Media from 'react-bootstrap/Media';
+import EmptyCart from './EmptyCart';
+import CartSummary from './CartSummary';
 class CartDetails extends Component
 {
     constructor()
@@ -10,24 +12,24 @@ class CartDetails extends Component
             items : [],
             results : [],
             itemIds : [],
-            quantity : '12S',
+            quantity : '',
+            cartStatus : false
         };
         this.deleteItem = this.deleteItem.bind(this);
         this.reloadPage = this.reloadPage.bind(this);
         this.updateCart = this.updateCart.bind(this);
+        this.onUpdate = this.onUpdate.bind(this);
     }
     componentDidMount()
     {
         var token = sessionStorage.getItem('Token');
-        // console.log("Check TOken",token);
+        console.log("I am ComponentDidMount");
         if((token === null) || (token.length === 0)|| (token === 'null') || (token === undefined))
         {
-            // alert("Please Login with Authorized details");
-            return(
-                <div className="container">
-
-                </div>
-            );
+            console.log("Status : User not logged in..");
+            this.setState({
+                cartStatus : true
+            });
         }
         else
         {
@@ -57,6 +59,34 @@ class CartDetails extends Component
         // console.log(id);
         this.setState({ quantity : e.target.value } );
         console.log(this.state.quantity);
+    }
+    onUpdate(cart_id,quantity,originalQuantity)
+    {
+        var token = sessionStorage.getItem('Token');
+        if((quantity < 1) || (quantity === originalQuantity) || (quantity === " "))
+        {
+            alert("Please provide proper Quantity..");
+        }
+        else
+        {
+            var data = {
+                'no_of_items' : quantity,
+                'cart_id'     : cart_id
+            };
+            fetch('http://laravel.local/api/cart-update',{
+                method: 'POST',  
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization' : 'Bearer '+token
+                },
+                body : JSON.stringify(data),
+            })
+            .then(res => res.json())
+            .then(json => {
+                console.log("Response : ",json);
+               this.componentDidMount();
+            });
+        }
     }
     deleteItem(itemId)
     {
@@ -88,7 +118,8 @@ class CartDetails extends Component
     render()
     {
         var items = this.state.items;
-        console.log("FInal Data:",this.state.quantity);
+        console.log("I am render,,");
+        // console.log("FInal Data:",this.state.quantity);
         var amount = 0 , GREY = '#cccccc';
         var extraCSS = {
             marginTop : 10 ,
@@ -98,7 +129,7 @@ class CartDetails extends Component
         
         for(var index in items)
         {
-            amount = amount + parseFloat(items[index].product_price);
+            amount = amount + parseFloat(items[index].product_price * items[index].no_of_items);
         }
         return(
             <div className="cart-wrapper">
@@ -128,13 +159,14 @@ class CartDetails extends Component
                                          <div className="col-md-2">
                                             <p>
                                                 <dt>Amount : </dt>
-                                                <dd>{item.product_price}</dd>
+                                                <dd>{ item.product_price * item.no_of_items }</dd>
                                             </p>
                                          </div>
-                                         <div className="col-md-2">
+                                         <div className="col-md-2" align="center">
                                             <p>
-                                                <dt>Quantity : [ {item.no_of_items} ]</dt>
-                                                <dd><input type="number"  onChange={this.updateCart} placeholder="  Update" className="form-control" data-name={item.id}  min={1}/></dd>
+                                                <dt>Selected Qty : <font style={{fontSize:20,color:`green`,fontFamily:`Times New Roman`}}>[ {item.no_of_items} ]</font></dt>
+                                                <dd><input type="number" onChange={this.updateCart} placeholder="  Update" className="form-control"  min={1}/></dd>
+                                                <button type="button" onClick={() => this.onUpdate(item.id, this.state.quantity, item.no_of_items)} className="btn btn-sm btn-warning">Update</button>
                                             </p>
                                          </div>
                                          <div className="col-md-2" align="center">
@@ -143,21 +175,13 @@ class CartDetails extends Component
                                     </div>
                                 </Media.Body>
                             </Media>
-                        ))}
-                        
+                        ))}                        
                     </ul>
-                    <div className="row">
-                        <div className="col-md-2"></div>
-                        <div className="col-md-4" align="right">
-                            <h1>Total : </h1>
-                        </div>
-                        <div className="col-md-2" align="center">
-                            <h1 className="text text-success">{amount}</h1>
-                        </div>
-                        <div className="col-md-4" align="center">
-                            <button className="btn btn-secondary">Proceed</button>
-                        </div>
-                    </div>
+                        
+                    {this.state.cartStatus && <EmptyCart/>}
+                    
+                    {!(this.state.cartStatus) && <CartSummary amount={amount} data = {this.state.items} />}                 
+                     <br /><br /><br />
                 </div>
             </div>
         );
