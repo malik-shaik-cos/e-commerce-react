@@ -7,28 +7,30 @@ class Tab1 extends Component
     {
         super();
         this.state = {
-            hint : '',
+            results : '',
         }
+        this.getData = this.getData.bind(this);
     }
     componentDidMount()
     {
-        const qs = new URLSearchParams(this.props.location.search);
-        const q = qs.get('search');
-        console.log(q);
-        this.setState({
-            hint : q
-        });
-        console.log(this.props.location);
-        console.log("Props",this.props);
+        this.getData();
+       
+    }
+    async getData()
+    {
+        const url = "https://api.myjson.com/bins/13bf1g";
+       const response = await fetch(url,{headers : {
+           'Content-type' : 'application/json'
+       }});
+       const data = await response.json();
+       this.setState({results:data});
+       console.log(this.state.results);
     }
     render()
     {
-        // console.log(this.props.location.query.__firebase_request_key);
-        // console.log(this.props.match.params.redirectParam);
-        // console.log(this.props);
         return(
             <div align="center">
-                <h1>This is Tab1 Page ,Hint : { this.state.hint }</h1>
+                
             </div>
         );
     }

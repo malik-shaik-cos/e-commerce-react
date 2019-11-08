@@ -3,7 +3,7 @@ import { Component } from 'react';
 import Home from './components/Home'
 import {  BrowserRouter as Router,   Route , Switch} from "react-router-dom";
 import Products from './components/Products';
-import Tab2 from './components/Tab2';
+import Tab1 from './components/Tab1';
 // import Login from './components/Login'
 import SearchProducts from './components/SearchProducts';
 import ProductDetails from './components/ProductDetails';
@@ -46,7 +46,7 @@ class App extends Component
               {/* <Route exact path="/search" render={(props) => <SearchProducts {...props} />} /> */}
               <Route exact path="/product" component={ProductDetails} />
               <Route exact path="/all" component={Products} />
-              <Route exact path="/Tab2"><Tab2 /></Route>
+              <Route exact path="/Tab1"><Tab1/></Route>
               {/* <Route exact path="/login"><Login /></Route> */}
               {/* <Route exact path="/register"><Register /></Route> */}
               <Route exact path="/auth"><Authentication /></Route>

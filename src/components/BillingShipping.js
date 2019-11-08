@@ -82,7 +82,13 @@ class BillingShipping extends Component
     handleSubmit(event)
     {
         event.preventDefault();
-        console.log(this.state);
+        const total_amount = this.state.total_amount;
+        const shipping_charges = this.state.shipping_charges;
+        const sales_tax = this.state.sales_tax;
+        const finalAmount = total_amount + shipping_charges + sales_tax;
+        console.log("Final Amount : "+finalAmount);
+        this.setState({ total_amount : finalAmount });
+        console.log("Total Amout handleSubmit : "+this.state.total_amount);
         if(this.validateData(this.state))
         {
             this.placeOrder(this.state);
@@ -90,6 +96,7 @@ class BillingShipping extends Component
     }
     placeOrder(data)
     {
+        console.log(this.state);
         var token = sessionStorage.getItem('Token');
         if((token === null) || (token.length === 0)|| (token === 'null') || (token === undefined))
         {
@@ -115,57 +122,57 @@ class BillingShipping extends Component
     }
     validateData(data)
     {
-        // var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-        // if(!(isNaN(data['b_name'])) || !(isNaN(data['s_name'])))
-        // {
-        //     console.log("Invalid Name, Please Enter proper Name");
-        //     return false;
-        // }
-        // if((reg.test(data['b_email']) === false) ||(reg.test(data['s_email']) === false))
-        // {
-        //     console.log("Invalid Email, Please Enter proper Email Address..");
-        //     return false;
-        // }
-        // if(!(isNaN(data['b_city'])) || !(isNaN(data['s_city'])))
-        // {
-        //     console.log("Invalid City Name, Please Enter proper city Name");
-        //     return false;
-        // }
-        // if(!(isNaN(data['b_state'])) || !(isNaN(data['s_state'])))
-        // {
-        //     console.log("Invalid State Name, Please Enter proper State Name");
-        //     return false;
-        // }
-        // if(!(isNaN(data['b_country'])) || !(isNaN(data['s_country'])))
-        // {
-        //     console.log("Invalid Country Name, Please Enter proper Country Name");
-        //     return false;
-        // }
-        // if((isNaN(data['b_mobile'])) || (isNaN(data['s_mobile'])))
-        // {
-        //     console.log("Invalid Mobile number, Please Enter proper Mobile Number");
-        //     return false;
-        // }
-        // if(!(isNaN(data['b_city'])) || !(isNaN(data['s_city'])))
-        // {
-        //     console.log("Invalid City Name, Please Enter proper city Name");
-        //     return false;
-        // }
-        // if(!(isNaN(data['name_in_card'])) || !(isNaN(data['name_in_card'])))
-        // {
-        //     console.log("Invalid Name in card, Please Enter your Name properly.");
-        //     return false;
-        // }
-        // if((data['card_number'].length < 16) || (data['card_number'].length > 16) || (isNaN(data['card_number'])) || (isNaN(data['card_number'])))
-        // {
-        //     console.log("Invalid Card Number, Length must must be 16 and it contains only numbers..");
-        //     return false;
-        // }
-        // if((data['security_code'] >= 999) || (data['security_code'] < 0) || (data['security_code'] >= 9999) || (isNaN(data['security_code'])) || (isNaN(data['security_code'])))
-        // {
-        //     console.log("Invalid Security Code");
-        //     return false;
-        // }
+        var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+        if(!(isNaN(data['b_name'])) || !(isNaN(data['s_name'])))
+        {
+            console.log("Invalid Name, Please Enter proper Name");
+            return false;
+        }
+        if((reg.test(data['b_email']) === false) ||(reg.test(data['s_email']) === false))
+        {
+            console.log("Invalid Email, Please Enter proper Email Address..");
+            return false;
+        }
+        if(!(isNaN(data['b_city'])) || !(isNaN(data['s_city'])))
+        {
+            console.log("Invalid City Name, Please Enter proper city Name");
+            return false;
+        }
+        if(!(isNaN(data['b_state'])) || !(isNaN(data['s_state'])))
+        {
+            console.log("Invalid State Name, Please Enter proper State Name");
+            return false;
+        }
+        if(!(isNaN(data['b_country'])) || !(isNaN(data['s_country'])))
+        {
+            console.log("Invalid Country Name, Please Enter proper Country Name");
+            return false;
+        }
+        if((isNaN(data['b_mobile'])) || (isNaN(data['s_mobile'])))
+        {
+            console.log("Invalid Mobile number, Please Enter proper Mobile Number");
+            return false;
+        }
+        if(!(isNaN(data['b_city'])) || !(isNaN(data['s_city'])))
+        {
+            console.log("Invalid City Name, Please Enter proper city Name");
+            return false;
+        }
+        if(!(isNaN(data['name_in_card'])) || !(isNaN(data['name_in_card'])))
+        {
+            console.log("Invalid Name in card, Please Enter your Name properly.");
+            return false;
+        }
+        if((data['card_number'].length < 16) || (data['card_number'].length > 16) || (isNaN(data['card_number'])) || (isNaN(data['card_number'])))
+        {
+            console.log("Invalid Card Number, Length must must be 16 and it contains only numbers..");
+            return false;
+        }
+        if((data['security_code'] < 0 ) || (data['security_code'] > 9999) || (isNaN(data['security_code'])) || (isNaN(data['security_code'])))
+        {
+            console.log("Invalid Security Code");
+            return false;
+        }
         return true;
     }
     componentDidMount()
@@ -194,6 +201,7 @@ class BillingShipping extends Component
     }
     render()
     {
+        console.log("Total Amount : ",this.state.total_amount);
         return(
             <div className="billing-shipping-container" style={{marginTop:20}}>
                 <div className="container">
