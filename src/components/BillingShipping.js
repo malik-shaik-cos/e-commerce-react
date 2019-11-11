@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-class BillingShipping extends Component
-{
-    constructor(props)
-    {
+class BillingShipping extends Component {
+    constructor(props) {
         super(props);
         this.state = {
             b_name    : '',
@@ -37,17 +35,18 @@ class BillingShipping extends Component
         this.copyData = this.copyData.bind(this);
         this.validateData = this.validateData.bind(this);
         this.placeOrder = this.placeOrder.bind(this);
+        this.getTotalAmount = this.getTotalAmount.bind(this);
     }
-    handleChange(key)
-    {
+
+    handleChange(key) {
         return function(e) {
             var state = {};
             state[key] = e.target.value;
             this.setState(state);
         }.bind(this);
     }
-    copyData()
-    {
+
+    copyData() {
         if(this.state.isChecked)
         {
             this.setState({
@@ -74,13 +73,12 @@ class BillingShipping extends Component
 
         }
     }
-    handleChecked()
-    {
+
+    handleChecked() {
         this.setState({ isChecked: !this.state.isChecked });
         this.copyData();
     }
-    handleSubmit(event)
-    {
+    handleSubmit(event) {
         event.preventDefault();
         const total_amount = this.state.total_amount;
         const shipping_charges = this.state.shipping_charges;
@@ -175,8 +173,7 @@ class BillingShipping extends Component
         }
         return true;
     }
-    componentDidMount()
-    {
+    getTotalAmount() {
         var token = sessionStorage.getItem('Token');
         if((token === null) || (token.length === 0)|| (token === 'null') || (token === undefined))
         {
@@ -198,6 +195,10 @@ class BillingShipping extends Component
                 })
             });
         }
+    }
+    componentDidMount()
+    {
+        this.getTotalAmount();
     }
     render()
     {

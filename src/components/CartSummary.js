@@ -17,7 +17,7 @@ class CartSummary extends Component
                     </div>
                     <div className="col-md-4" align="center">
                         <Link to={{
-                            pathname :'/billing-shipping',
+                            pathname :'/checkout',
                         }}>
                             <button className="btn btn-dark btn-lg">Proceed</button>
                         </Link>
