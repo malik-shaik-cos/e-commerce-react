@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import Header from './Header';
 import Products from './Products';
-class Home extends Component
-{
-    constructor(props)
-    {
+class Home extends Component {
+    constructor(props) {
         super(props);
         this.state = {
             hint : '',
@@ -16,8 +14,7 @@ class Home extends Component
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    componentDidMount()
-    {
+    componentDidMount() {
         fetch("http://laravel.local/api/products",{
             method: 'GET',
             headers: {
@@ -29,12 +26,10 @@ class Home extends Component
             })
         });
     }
-    handleChange(event)
-    {
+    handleChange(event) {
         this.setState({ hint : event.target.value });
     }
-    handleSubmit(event)
-    {
+    handleSubmit(event) {
         event.preventDefault();        
         if(this.state.hint.length < 3)
         {
