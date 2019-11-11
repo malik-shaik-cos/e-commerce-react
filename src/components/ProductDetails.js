@@ -26,7 +26,6 @@ class ProductDetails extends Component
         }
         else
         {
-            // alert("Success Added...........");
             fetch("http://laravel.local/api/add-to-cart",{
                 method: 'POST',  
                 headers: {
@@ -68,7 +67,6 @@ class ProductDetails extends Component
     }
     render()
     {
-        // console.log("Product : ",this.state.items);
         console.log("State Data:",this.state);
         var {isLoaded} = this.state;
         let cardStyle = {
