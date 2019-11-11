@@ -14,6 +14,7 @@ import CartDetails from './components/CartDetails';
 import BillingShipping from './components/BillingShipping';
 import CartSummary from './components/CartSummary';
 import CheckoutPage from './components/CheckoutPage';
+import OrderSuccessModel from './components/OrderSuccessModel';
 // import Tab1 from './components/Tab1';
 // const Greeting = ({match}) => console.log('hint : ',match.params.q);
 class App extends Component
@@ -54,7 +55,7 @@ class App extends Component
               <Route exact path="/cart-details"><CartDetails /></Route>
               <Route exact path="/billing-shipping"><BillingShipping />
               </Route><Route exact path="/checkout"><CheckoutPage /></Route>
-              <Route exact path="/test"><CartSummary /></Route>
+              <Route exact path="/test"><OrderSuccessModel /></Route>
               {/* <Route exact path="/products"><Products /></Route> */}
             </Switch>
           {/* <Switch>

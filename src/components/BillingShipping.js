@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import OrderSuccessModel from './OrderSuccessModel';
 class BillingShipping extends Component {
     constructor(props) {
         super(props);
@@ -28,6 +29,7 @@ class BillingShipping extends Component {
             shipping_charges : 10,
             isChecked      : true,
             result   : [],
+            resultStatus : false
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -114,7 +116,15 @@ class BillingShipping extends Component {
             .then(json => {
                 this.setState({
                     result : json
-                })
+                });
+                if(this.state.result.Code === 200)
+                {
+                    console.log("Successfully Order placed...");
+                    this.setState({ resultStatus : true });
+                    alert("Successfully your Order Placed.");
+                    console.log(this.state.result.Data.original);
+                }
+                this.getTotalAmount();
             });
         }
     }
@@ -202,7 +212,7 @@ class BillingShipping extends Component {
     }
     render()
     {
-        console.log("Total Amount : ",this.state.total_amount);
+        
         return(
             <div className="billing-shipping-container" style={{marginTop:20}}>
                 <div className="container">
